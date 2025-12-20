@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Books | eLibrary</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="logo">📚 <span>eLibrary</span></div>
+
+  <ul class="nav-links">
+    <li onclick="goHome()">Home</li>
+    <li class="active">Books</li>
+    <li onclick="goContact()">Contact</li>
+  </ul>
+
+  <div class="user-area">
+    <span id="welcomeText"></span>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </div>
+</nav>
+
+<!-- CONTENT -->
+<div class="container">
+  <h2 class="page-title">Available Books</h2>
+
+  <div class="search-box">
+    <input
+      id="search"
+      placeholder="Search books by title..."
+      onkeyup="searchBooks()"
+    />
+  </div>
+
+  <div class="books-grid" id="books"></div>
+</div>
+
+<script>
+const token = localStorage.getItem("token");
+const name = localStorage.getItem("name");
+
+if (!token || !name) {
+  window.location.href = "login.html";
+}
+
+document.getElementById("welcomeText").innerText = `Hello, ${name}`;
+
+// Load all books
+fetch("/api/books", {
+  headers: { "Authorization": "Bearer " + token }
+})
+.then(res => res.json())
+.then(showBooks);
+
+function showBooks(list) {
+  const box = document.getElementById("books");
+  box.innerHTML = "";
+
+  if (!list || list.length === 0) {
+    box.innerHTML = "<p class='empty'>No books found</p>";
+    return;
+  }
+
+  list.forEach(b => {
+    box.innerHTML += `
+      <div class="book-card">
+        <h3>${b.title}</h3>
+        <p><b>Author:</b> ${b.author}</p>
+        <p><b>Category:</b> ${b.category}</p>
+        <button class="primary-btn" onclick="download(${b.id})">
+          Download
+        </button>
+      </div>
+    `;
+  });
+}
+
+function searchBooks() {
+  const q = document.getElementById("search").value.trim();
+
+  fetch("/api/books/search?q=" + q, {
+    headers: { "Authorization": "Bearer " + token }
+  })
+  .then(res => res.json())
+  .then(showBooks);
+}
+
+function download(id) {
+  fetch("/api/books/download/" + id, {
+    headers: { "Authorization": "Bearer " + token }
+  })
+  .then(res => {
+    if (!res.ok) {
+      alert("Unauthorized or file missing");
+      return;
+    }
+    return res.blob();
+  })
+  .then(blob => {
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "book.pdf";
+    a.click();
+    window.URL.revokeObjectURL(url);
+  });
+}
+
+function logout() {
+  localStorage.clear();
+  window.location.href = "login.html";
+}
+
+function goHome() {
+  window.location.href = "index.html";
+}
+
+function goContact(){
+    window.location.href="contact.html";
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Register | eLibrary</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="auth-box">
+  <h2>Create Account</h2>
+
+  <input id="name" type="text" placeholder="Full Name" required>
+  <input id="email" type="email" placeholder="Email" required>
+  <input id="password" type="password" placeholder="Password" required>
+
+  <button class="primary-btn" onclick="register()">Register</button>
+
+  <p class="switch">
+    Already registered?
+    <a href="login.html">Login</a>
+  </p>
+</div>
+
+<script>
+function register() {
+  const name = document.getElementById("name").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
+
+  if (!name || !email || !password) {
+    alert("All fields are required");
+    return;
+  }
+
+  fetch("/api/auth/register", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name, email, password })
+  })
+  .then(async res => {
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.message || "Registration failed");
+      return;
+    }
+
+    alert("Registration successful! Please login.");
+    window.location.href = "login.html";
+  })
+  .catch(() => {
+    alert("Server error. Try again later.");
+  });
+}
+</script>
+
+</body>
+</html>

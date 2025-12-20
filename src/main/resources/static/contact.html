@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Contact | eLibrary</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="logo">📚 eLibrary</div>
+
+   <ul class="nav-links">
+    <li onclick="goHome()">Home</li>
+    <li onclick="goToBooks()">Books</li>
+    <li class="active">Contact</li>
+  </ul>
+  <div class="user-area">
+    <span id="welcomeText"></span>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </div>
+</nav>
+
+<!-- CONTACT CARD -->
+<div class="contact-wrapper">
+  <div class="contact-card">
+
+    <h2>📬 Contact Me</h2>
+    <p class="subtitle">
+      Feel free to reach out for queries, feedback, or collaboration.
+    </p>
+
+    <div class="contact-info">
+      <div class="info-box">
+        <strong>Email</strong>
+        <p>
+          <a href="mailto:jaswanthsai2406@gmail.com">
+            jaswanthsai2406@gmail.com
+          </a>
+        </p>
+      </div>
+
+      <div class="info-box">
+        <strong>LinkedIn</strong>
+        <p>
+          <a href="https://www.linkedin.com/in/jaswanth2406/" target="_blank">
+            linkedin.com/in/jaswanth2406
+          </a>
+        </p>
+      </div>
+
+      <div class="info-box">
+        <strong>GitHub</strong>
+        <p>
+          <a href="https://github.com/Jaswanth-24" target="_blank">
+            github.com/Jaswanth-24
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <!-- MESSAGE FORM (UI only) -->
+    <div class="form">
+      <input type="text" placeholder="Your Name">
+      <input type="email" placeholder="Your Email">
+      <textarea rows="4" placeholder="Your Message"></textarea>
+      <button class="primary-btn" onclick="sendMsg()">Send Message</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const token = localStorage.getItem("token");
+const name = localStorage.getItem("name") || localStorage.getItem("email");
+
+if (!token) {
+  window.location.href = "login.html";
+}
+
+document.getElementById("welcomeText").innerText = `Hello, ${name}`;
+
+function logout() {
+  localStorage.clear();
+  window.location.href = "login.html";
+}
+
+function goHome() {
+  window.location.href = "index.html";
+}
+
+function goToBooks() {
+  window.location.href = "books.html";
+}
+
+function sendMsg() {
+  alert("Thanks! This feature will be enabled soon 😊");
+}
+</script>
+
+</body>
+</html>

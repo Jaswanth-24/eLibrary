@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>eLibrary</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="logo">
+    📚 <span>eLibrary</span>
+  </div>
+
+  <ul class="nav-links">
+    <li class="active">Home</li>
+    <li onclick="goToBooks()">Books</li>
+    <li onclick="goContact()">Contact</li>
+  </ul>
+
+  <div class="user-area">
+    <span id="welcomeText"></span>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div class="hero">
+  <h1>Welcome to eLibrary</h1>
+  <p>
+    Centralize and simplify your digital reading experience.<br>
+    Discover, explore, and securely download books anytime.
+  </p>
+</div>
+
+<!-- FEATURES -->
+<div class="cards">
+  <div class="card">
+    <h3>📚 Explore Books</h3>
+    <p>Browse our curated digital library collection.</p>
+  </div>
+
+  <div class="card">
+    <h3>🔐 Secure Access</h3>
+    <p>JWT-based authentication ensures safe downloads.</p>
+  </div>
+
+  <div class="card">
+    <h3>⚡ Fast Downloads</h3>
+    <p>Download PDFs directly from the server.</p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  © 2025 eLibrary. All rights reserved.
+</footer>
+
+<script>
+const token = localStorage.getItem("token");
+const name = localStorage.getItem("name");
+
+if (!token || !name) {
+  window.location.href = "login.html";
+}
+
+document.getElementById("welcomeText").innerText = `Hello, ${name}`;
+
+function logout() {
+  localStorage.clear();
+  window.location.href = "login.html";
+}
+
+function goToBooks() {
+  window.location.href = "books.html";
+}
+
+function goContact(){
+    window.location.href="contact.html";
+}
+</script>
+
+</body>
+</html>
