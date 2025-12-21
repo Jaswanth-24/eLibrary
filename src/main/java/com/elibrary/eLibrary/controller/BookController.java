@@ -1,9 +1,14 @@
 package com.elibrary.eLibrary.controller;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -11,64 +16,94 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.elibrary.eLibrary.model.Book;
 import com.elibrary.eLibrary.service.BookService;
-import com.elibrary.eLibrary.security.JwtUtil;
-
 
 @RestController
 @RequestMapping("/api/books")
 @CrossOrigin("*")
 public class BookController {
 
+    private static final String BASE_DIR = "books/";
+
     @Autowired
     private BookService service;
-    
-    @Autowired
-    private JwtUtil jwt;
 
+    // ================= GET ALL BOOKS =================
     @GetMapping
     public List<Book> all() {
         return service.getAll();
     }
 
+    // ================= SEARCH =================
     @GetMapping("/search")
     public List<Book> search(@RequestParam String q) {
         return service.search(q);
     }
 
+    // ================= DOWNLOAD / VIEW PDF =================
     @GetMapping("/download/{id}")
-public ResponseEntity<Resource> download(
-        @RequestHeader("Authorization") String auth,
-        @PathVariable Long id) throws IOException {
+    public ResponseEntity<Resource> download(@PathVariable Long id) throws IOException {
 
-    String token = auth.replace("Bearer ", "");
-    if (!jwt.validate(token)) {
-        return ResponseEntity.status(401).build();
+        Book book = service.get(id);
+        Path path = Paths.get(book.getFilePath());
+
+        if (!Files.exists(path)) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Resource resource = new UrlResource(path.toUri());
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF)
+                .header(
+                    HttpHeaders.CONTENT_DISPOSITION,
+                    "inline; filename=\"" + book.getFileName() + "\""
+                )
+                .body(resource);
     }
 
-    Book book = service.get(id);
-    Path path = Paths.get(book.getFilePath());
+    // ================= UPLOAD PDF =================
+    @PostMapping("/upload")
+    public ResponseEntity<?> uploadBook(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam String title,
+            @RequestParam(required = false) String author,
+            @RequestParam(required = false) String category
+        ) throws IOException {
 
-    if (!Files.exists(path) || !path.toString().endsWith(".pdf")) {
-        return ResponseEntity.badRequest().build();
+        if (!file.getOriginalFilename().toLowerCase().endsWith(".pdf")) {
+            return ResponseEntity.badRequest()
+                .body(Map.of("message", "Only PDF files are allowed"));
+        }
+
+        if (file.getSize() > 10 * 1024 * 1024) {
+            return ResponseEntity.badRequest()
+                .body(Map.of("message", "File size must be under 10MB"));
+        }
+
+        Files.createDirectories(Paths.get(BASE_DIR));
+
+        String storedName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+        Path path = Paths.get(BASE_DIR, storedName);
+
+        Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+
+        Book book = new Book();
+        book.setTitle(title);
+        book.setAuthor(author);
+        book.setCategory(category);
+        book.setFilePath(path.toString());
+        book.setFileName(file.getOriginalFilename());
+        book.setFileSize(file.getSize());
+        book.setUploadedAt(LocalDateTime.now());
+
+        service.save(book);
+
+        return ResponseEntity.ok(Map.of("message", "PDF uploaded successfully"));
     }
-
-    Resource res = new UrlResource(path.toUri());
-
-    return ResponseEntity.ok()
-            .contentType(MediaType.APPLICATION_PDF)
-            .header(HttpHeaders.CONTENT_DISPOSITION,
-                    "attachment; filename=\"" + path.getFileName() + "\"")
-            .body(res);
 }
 
-}

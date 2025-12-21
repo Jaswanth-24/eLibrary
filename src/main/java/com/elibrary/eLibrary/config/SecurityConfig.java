@@ -8,16 +8,24 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-            .csrf(csrf -> csrf.disable())
-            .headers(headers -> headers.frameOptions(frame -> frame.disable())) // 🔥 REQUIRED FOR H2
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/h2-console/**").permitAll()
-                .anyRequest().permitAll()
-            );
+   @Bean
+public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        return http.build();
-    }
+    http
+        .csrf(csrf -> csrf.disable())
+        .authorizeHttpRequests(auth -> auth
+            .requestMatchers(
+                "/api/auth/**",     
+                "/api/books/**",
+                "/h2-console/**",
+                "/**"               // static HTML, CSS, JS
+            ).permitAll()
+            .anyRequest().authenticated()
+        )
+        .headers(headers -> headers
+            .frameOptions(frame -> frame.disable())
+        );
+
+    return http.build();
+}
 }

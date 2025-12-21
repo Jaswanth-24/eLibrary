@@ -19,5 +19,8 @@ data/
 *.mv.db
 *.trace.db
 
+# Uploaded files (DO NOT COMMIT)
+books/
+
 # Secrets (if any later)
 .env

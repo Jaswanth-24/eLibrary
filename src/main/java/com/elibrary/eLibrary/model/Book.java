@@ -1,5 +1,7 @@
 package com.elibrary.eLibrary.model;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -11,9 +13,17 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String title;
+
     private String author;
     private String category;
 
-    private String filePath;
+    @Column(nullable = false)
+    private String filePath;     // server path
+
+    private String fileName;     // original PDF name
+    private Long fileSize;       // bytes
+
+    private LocalDateTime uploadedAt;
 }

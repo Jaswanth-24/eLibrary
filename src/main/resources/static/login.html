@@ -3,20 +3,110 @@
 <head>
   <meta charset="UTF-8">
   <title>Login | eLibrary</title>
-  <link rel="stylesheet" href="css/style.css">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .auth-box {
+      background: #fff;
+      width: 360px;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+    }
+
+    .auth-box h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #333;
+    }
+
+    .field {
+      position: relative;
+      margin-bottom: 18px;
+    }
+
+    .field input {
+      width: 100%;
+      padding: 12px 40px 12px 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+      outline: none;
+    }
+
+    .field input:focus {
+      border-color: #4facfe;
+    }
+
+    .eye {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 18px;
+      user-select: none;
+    }
+
+    .primary-btn {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 8px;
+      background: #4facfe;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .primary-btn:hover {
+      background: #358fe0;
+    }
+
+    .switch {
+      text-align: center;
+      margin-top: 18px;
+      font-size: 14px;
+    }
+
+    .switch a {
+      color: #4facfe;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .switch a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
 
 <div class="auth-box">
   <h2>Login to eLibrary</h2>
 
-  <input id="email" type="email" placeholder="Email" required>
-  <input id="password" type="password" placeholder="Password" required>
+  <div class="field">
+    <input id="email" type="email" placeholder="Email" required>
+  </div>
 
-  <div class="row">
-    <label class="checkbox">
-      <input type="checkbox" onclick="togglePassword()"> Show Password
-    </label>
+  <div class="field">
+    <input id="password" type="password" placeholder="Password" required>
+    <span class="eye" id="eye" onclick="togglePassword()">🙈</span>
   </div>
 
   <button class="primary-btn" onclick="login()">Login</button>
@@ -29,8 +119,16 @@
 
 <script>
 function togglePassword() {
-  const p = document.getElementById("password");
-  p.type = p.type === "password" ? "text" : "password";
+  const password = document.getElementById("password");
+  const eye = document.getElementById("eye");
+
+  if (password.type === "password") {
+    password.type = "text";
+    eye.textContent = "🙊"; // password visible
+  } else {
+    password.type = "password";
+    eye.textContent = "🙈"; // password hidden
+  }
 }
 
 function login() {
@@ -53,10 +151,7 @@ function login() {
   })
   .then(data => {
     localStorage.setItem("token", data.token);
-
-    // backend doesn't return name → use email as display name
     localStorage.setItem("name", email);
-
     alert("Login successful");
     window.location.href = "index.html";
   })

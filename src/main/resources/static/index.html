@@ -13,11 +13,13 @@
     📚 <span>eLibrary</span>
   </div>
 
-  <ul class="nav-links">
+   <ul class="nav-links">
     <li class="active">Home</li>
     <li onclick="goToBooks()">Books</li>
+    <li onclick="gotoupload()">Upload</li>
     <li onclick="goContact()">Contact</li>
   </ul>
+
 
   <div class="user-area">
     <span id="welcomeText"></span>
@@ -76,7 +78,9 @@ function logout() {
 function goToBooks() {
   window.location.href = "books.html";
 }
-
+function gotoupload(){
+  window.location.href = "upload.html";
+}
 function goContact(){
     window.location.href="contact.html";
 }

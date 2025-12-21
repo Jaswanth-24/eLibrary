@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload Book | eLibrary</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- NAVBAR (same as index.html) -->
+<nav class="navbar">
+  <div class="logo">📚 <span>eLibrary</span></div>
+
+  <ul class="nav-links">
+    <li onclick="goHome()">Home</li>
+    <li onclick="goToBooks()">Books</li>
+    <li class="active">Upload</li>
+    <li onclick="goContact()">Contact</li>
+  </ul>
+
+  <div class="user-area">
+    <span id="welcomeText"></span>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </div>
+</nav>
+
+<!-- MAIN CONTAINER (same alignment as index) -->
+<div class="upload-wrapper">
+  <div class="upload-card">
+    <h3 class="upload-title">Upload New Book (PDF)</h3>
+    <p class="upload-subtitle">
+      Add a new book to the eLibrary collection
+    </p>
+
+    <div class="form-group">
+      <label>Book Title *</label>
+      <input id="title" placeholder="Enter book title">
+    </div>
+
+    <div class="form-group">
+      <label>Author</label>
+      <input id="author" placeholder="Enter author name">
+    </div>
+
+    <div class="form-group">
+      <label>Category</label>
+      <input id="category" placeholder="Enter category">
+    </div>
+
+    <div class="form-group">
+      <label>PDF File *</label>
+      <input id="file" type="file" accept="application/pdf">
+      <small id="fileName"></small>
+    </div>
+
+    <button class="primary-btn" onclick="upload()">Upload PDF</button>
+
+    <p class="msg" id="msg"></p>
+  </div>
+</div>
+
+<script>
+
+if (!localStorage.getItem("token")) {
+  window.location.href = "login.html";
+}
+
+/* ---------- NAV HELPERS (same as index) ---------- */
+function goHome() {
+  window.location.href = "index.html";
+}
+function goToBooks(){
+    window.location.href="books.html";
+}
+function goContact() {
+  window.location.href = "contact.html";
+}
+function logout() {
+  localStorage.clear();
+  window.location.href = "login.html";
+}
+
+document.getElementById("welcomeText").textContent =
+  "Hi, " + (localStorage.getItem("name") || "User");
+
+/* ---------- UPLOAD LOGIC ---------- */
+const fileInput = document.getElementById("file");
+const fileName = document.getElementById("fileName");
+const msg = document.getElementById("msg");
+
+fileInput.addEventListener("change", () => {
+  fileName.textContent = fileInput.files[0]?.name || "";
+});
+
+function upload() {
+  msg.textContent = "";
+  msg.className = "msg";
+
+  const title = document.getElementById("title").value.trim();
+  const author = document.getElementById("author").value.trim();
+  const category = document.getElementById("category").value.trim();
+  const file = fileInput.files[0];
+
+  if (!title || !file) {
+    showError("Title and PDF file are required");
+    return;
+  }
+
+  if (!file.name.toLowerCase().endsWith(".pdf")) {
+    showError("Only PDF files are allowed");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("title", title);
+  formData.append("author", author);
+  formData.append("category", category);
+
+  fetch("/api/books/upload", {
+        method: "POST",
+        body: formData
+    })
+    .then(res => {
+        if (!res.ok) throw new Error();
+        return res.json();
+    })
+    .then(data => {
+        alert("Upload successful");
+        window.location.href = "books.html";
+    })
+    .catch(() => {
+        showError("Upload failed");
+    });
+}
+function showSuccess(text) {
+  msg.textContent = text;
+  msg.style.color = "green";
+}
+
+function showError(text) {
+  msg.textContent = text;
+  msg.style.color = "red";
+}
+</script>
+
+</body>
+</html>

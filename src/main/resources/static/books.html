@@ -14,6 +14,7 @@
   <ul class="nav-links">
     <li onclick="goHome()">Home</li>
     <li class="active">Books</li>
+    <li onclick="gotoupload()">Upload</li>
     <li onclick="goContact()">Contact</li>
   </ul>
 
@@ -42,6 +43,9 @@
 const token = localStorage.getItem("token");
 const name = localStorage.getItem("name");
 
+if (!token) {
+  window.location.href = "login.html";
+}
 if (!token || !name) {
   window.location.href = "login.html";
 }
@@ -49,11 +53,9 @@ if (!token || !name) {
 document.getElementById("welcomeText").innerText = `Hello, ${name}`;
 
 // Load all books
-fetch("/api/books", {
-  headers: { "Authorization": "Bearer " + token }
-})
-.then(res => res.json())
-.then(showBooks);
+fetch("/api/books")
+  .then(res => res.json())
+  .then(showBooks);
 
 function showBooks(list) {
   const box = document.getElementById("books");
@@ -80,46 +82,24 @@ function showBooks(list) {
 
 function searchBooks() {
   const q = document.getElementById("search").value.trim();
-
-  fetch("/api/books/search?q=" + q, {
-    headers: { "Authorization": "Bearer " + token }
-  })
-  .then(res => res.json())
-  .then(showBooks);
+  fetch("/api/books/search?q=" + q)
+    .then(res => res.json())
+    .then(showBooks);
 }
-
-function download(id) {
-  fetch("/api/books/download/" + id, {
-    headers: { "Authorization": "Bearer " + token }
-  })
-  .then(res => {
-    if (!res.ok) {
-      alert("Unauthorized or file missing");
-      return;
-    }
-    return res.blob();
-  })
-  .then(blob => {
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "book.pdf";
-    a.click();
-    window.URL.revokeObjectURL(url);
-  });
+function goHome(){
+  window.location.href="index.html";
 }
-
-function logout() {
-  localStorage.clear();
-  window.location.href = "login.html";
+function gotoupload(){
+  window.location.href = "upload.html";
 }
-
-function goHome() {
-  window.location.href = "index.html";
-}
-
 function goContact(){
-    window.location.href="contact.html";
+  window.location.href="contact.html";
+}
+function logout(){
+  window.location.href="login.html";
+}
+function download(id) {
+  window.location.href = "/api/books/download/" + id;
 }
 </script>
 
