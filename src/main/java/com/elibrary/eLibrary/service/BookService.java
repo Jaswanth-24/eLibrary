@@ -13,7 +13,7 @@ public class BookService {
         return repo.findAll();
     }
     public List<Book> search(String q) {
-        return repo.findByTitleContainingIgnoreCase(q,q);
+        return repo.findByTitleContainingIgnoreCase(q);
     }
     public Book get(Long id) {
         return repo.findById(id).orElse(null);
