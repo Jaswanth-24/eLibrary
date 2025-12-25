@@ -1,26 +1,48 @@
-# Maven
-/target/
-.mvn/wrapper/maven-wrapper.jar
+# ===============================
+# Java / Maven
+# ===============================
+target/
+*.class
+*.jar
+*.war
+*.ear
 
-# IDE
+# ===============================
+# IDEs
+# ===============================
 .idea/
 .vscode/
 *.iml
+.classpath
+.project
+.settings/
 
-# OS
+# ===============================
+# OS files
+# ===============================
 .DS_Store
 Thumbs.db
 
+# ===============================
+# Environment / Secrets
+# ===============================
+.env
+.env.*
+application-secret.properties
+
+# ===============================
 # Logs
+# ===============================
+logs/
 *.log
 
-# H2 Database (DO NOT COMMIT)
-data/
-*.mv.db
-*.trace.db
+# ===============================
+# Node / frontend (if any later)
+# ===============================
+node_modules/
 
-# Uploaded files (DO NOT COMMIT)
+# ===============================
+# Supabase / local uploads (if ever created)
+# ===============================
 books/
-
-# Secrets (if any later)
-.env
+uploads/
