@@ -13,6 +13,7 @@
   <input id="name" type="text" placeholder="Full Name" required>
   <input id="email" type="email" placeholder="Email" required>
   <input id="password" type="password" placeholder="Password" required>
+  <span class="eye" id="eye" onclick="togglePassword()">🙈</span>
 
   <button class="primary-btn" onclick="register()">Register</button>
 
@@ -23,6 +24,18 @@
 </div>
 
 <script>
+function togglePassword() {
+  const password = document.getElementById("password");
+  const eye = document.getElementById("eye");
+
+  if (password.type === "password") {
+    password.type = "text";
+    eye.textContent = "🙊"; // password visible
+  } else {
+    password.type = "password";
+    eye.textContent = "🙈"; // password hidden
+  }
+}
 function register() {
   const name = document.getElementById("name").value.trim();
   const email = document.getElementById("email").value.trim();
