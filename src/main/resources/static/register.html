@@ -9,12 +9,16 @@
 
 <div class="auth-box">
   <h2>Create Account</h2>
-
-  <input id="name" type="text" placeholder="Full Name" required>
-  <input id="email" type="email" placeholder="Email" required>
-  <input id="password" type="password" placeholder="Password" required>
-  <span class="eye" id="eye" onclick="togglePassword()">🙈</span>
-
+   <div class="field">
+    <input id="name" type="text" placeholder="Full Name" required>
+   </div>
+   <div class="field">
+    <input id="email" type="email" placeholder="Email" required>
+   </div>
+   <div class="field">  
+    <input id="password" type="password" placeholder="Password" required>
+    <span class="eye" id="eye" onclick="togglePassword()">🙈</span>
+   </div>
   <button class="primary-btn" onclick="register()">Register</button>
 
   <p class="switch">
