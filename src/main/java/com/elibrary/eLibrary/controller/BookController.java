@@ -42,18 +42,20 @@ public class BookController {
 
     // ================= DOWNLOAD / VIEW PDF =================
     @GetMapping("/download/{id}")
-    public ResponseEntity<Void> download(@PathVariable Long id) {
+    public ResponseEntity<?> download(@PathVariable Long id) {
 
         Book book = service.get(id);
 
-        if (book == null || book.getFilePath() == null) {
+        if (book == null || book.getFilePath() == null || book.getFilePath().isBlank()) {
             return ResponseEntity.notFound().build();
         }
-        System.out.println("DOWNLOAD URL = " + book.getFilePath());
-        return ResponseEntity.status(HttpStatus.FOUND)
-                .location(URI.create(book.getFilePath()))
+
+        return ResponseEntity
+                .status(HttpStatus.TEMPORARY_REDIRECT) // 307
+                .header("Location", book.getFilePath())
                 .build();
     }
+
 
 
 
