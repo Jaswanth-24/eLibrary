@@ -2,12 +2,15 @@ package com.elibrary.eLibrary.controller;
 
 import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,11 +49,17 @@ public class BookController {
 
         Book book = service.get(id);
 
-        return ResponseEntity
-                .status(HttpStatus.FOUND)
+        if (book == null || book.getFilePath() == null) {
+            return ResponseEntity.notFound().build();
+        }
+        System.out.println("DOWNLOAD URL = " + book.getFilePath());
+
+        return ResponseEntity.status(HttpStatus.FOUND)
                 .location(URI.create(book.getFilePath()))
                 .build();
     }
+
+
 
     // ================= UPLOAD PDF =================
     @PostMapping("/upload")
