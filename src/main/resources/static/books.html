@@ -43,9 +43,6 @@
 const token = localStorage.getItem("token");
 const name = localStorage.getItem("name");
 
-if (!token) {
-  window.location.href = "login.html";
-}
 if (!token || !name) {
   window.location.href = "login.html";
 }
