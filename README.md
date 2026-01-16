@@ -8,7 +8,9 @@
 
 eLibrary, a secure and efficient digital library system for managing books, users, and access using a scalable backend architecture.
 
-Key Features:
+**_live_**: https://elibrary-production-e1ab.up.railway.app/
+
+**Key Features:**
 
 **User Authentication:**
 Secure login system that allows users to access the eLibrary and manage their own uploaded and downloaded PDF resources.
