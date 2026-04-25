@@ -8,7 +8,7 @@
 
 eLibrary, a secure and efficient digital library system for managing books, users, and access using a scalable backend architecture.
 
-**_Live_**:  https://elibrary-production-e1ab.up.railway.app/
+**_Live_**:  http://ec2-13-236-200-65.ap-southeast-2.compute.amazonaws.com:8080/
 
 **Key Features:**
 
