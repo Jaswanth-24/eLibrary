@@ -1,74 +1,103 @@
+# Hi, I'm Jaswanth Sai 👋
 
-# Hi, I'm Jaswanth Sai! 👋
+## 📚 eLibrary – Scalable Digital Library Backend System
 
+A backend-driven digital library application designed to handle secure document management, user authentication, and scalable storage using modern backend technologies.
 
+🔗 **Live Demo:** http://ec2-13-236-200-65.ap-southeast-2.compute.amazonaws.com:8080/
 
+---
 
-**eLibrary – A Digital Library Application**
+## 🚀 Key Highlights
 
-eLibrary, a secure and efficient digital library system for managing books, users, and access using a scalable backend architecture.
+* Designed and developed a **RESTful backend system** using Spring Boot for managing users and digital resources
+* Implemented **stateless authentication using JWT** to secure APIs and enforce access control
+* Built **file handling APIs** for efficient upload and retrieval of PDF documents
+* Ensured **user-specific authorization**, restricting access to only owned resources
+* Integrated **PostgreSQL (Supabase)** for persistent and scalable data storage
+* Deployed application on **AWS EC2**, enabling real-world accessibility
 
-**_Live_**:  http://ec2-13-236-200-65.ap-southeast-2.compute.amazonaws.com:8080/
+---
 
-**Key Features:**
+## ⚙️ Features
 
-**User Authentication:**
-Secure login system that allows users to access the eLibrary and manage their own uploaded and downloaded PDF resources.
+### 🔐 Authentication & Authorization (JWT-Based)
 
-**PDF Upload & Download:**
-Users can upload PDF files to the library and download available documents easily through a simple interface.
+* Implemented **JSON Web Token (JWT) authentication** for secure and stateless sessions
+* Generated JWT tokens upon successful login
+* Secured endpoints using **Spring Security filters**
+* Validated JWT for every protected API request via Authorization headers
+* Ensured only authenticated users can access upload/download functionalities
 
-**Centralized Digital Library:**
-All uploaded PDFs are stored in an organized and searchable digital repository for easy access.
+---
 
-**Search & Browse Functionality:**
-Users can search and browse available PDFs by file name or keywords for quick discovery.
+### 📂 File Management
 
-**User-Specific Access:**
-Each user can view and manage their own uploaded PDFs without role-based restrictions.
+* Upload, store, and download PDF files using backend APIs
+* Maintains metadata for efficient document organization
+* Handles file storage with structured backend logic
 
-**Simple & Clean UI:**
-User-friendly interface designed for smooth navigation, uploading, and downloading of PDF files.
+---
 
-**Scalable Backend Storage:**
-Uses structured storage for PDFs and metadata, allowing the library to scale as more documents are added.
+### 🔎 Search Functionality
 
-**Tech Stack:**
+* Search PDFs using keywords and filenames
+* Optimized database queries for faster retrieval
 
-**Frontend:** HTML, CSS, JavaScript
+---
 
-**Backend:** Java, SpringBoot
+## 🏗️ Tech Stack
 
-**Database:** PostgreSQL (managed via Supabase)
+* **Backend:** Java, Spring Boot, Spring Security
+* **Database:** PostgreSQL (Supabase)
+* **Frontend:** HTML, CSS, JavaScript
+* **Deployment:** AWS EC2
 
+---
 
+## 🔗 API Overview
 
+| Method | Endpoint       | Description                 |
+| ------ | -------------- | --------------------------- |
+| POST   | /auth/login    | Authenticate user & get JWT |
+| POST   | /upload        | Upload PDF file             |
+| GET    | /files         | Fetch all user files        |
+| GET    | /download/{id} | Download specific file      |
 
-## License
+---
 
-MIT License
+## 🧠 Backend Design Focus
 
-Copyright (c) 2025 Jaswanth
+* REST API design and request handling
+* Secure authentication and authorization
+* Database schema design and optimization
+* File storage and retrieval efficiency
+* Scalable backend architecture
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+---
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+## 🔐 Security Considerations
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+* JWT-based stateless authentication
+* Secured endpoints using Spring Security
+* User-specific data isolation
+* Protected routes from unauthorized access
 
+---
 
-## Support
+## 🚀 Deployment
 
-For support, email jaswanthsai2406@gmail.com
+The application is deployed on AWS EC2 and accessible publicly:
+http://ec2-13-236-200-65.ap-southeast-2.compute.amazonaws.com:8080/
+
+---
+
+## 📜 License
+
+MIT License © 2025 Jaswanth Sai
+
+---
+
+## 📬 Contact
+
+For queries or collaboration: **[jaswanthsai2406@gmail.com](mailto:jaswanthsai2406@gmail.com)**
